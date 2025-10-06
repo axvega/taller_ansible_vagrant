@@ -1,13 +1,17 @@
 - name: "ensure apache2 is installed"
   apt:
     pkg: apache2
-- name: copy template index 
-  template: 
+    state: present
+  become: yes
+
+- name: copy template index
+  template:
     src: index.j2
     dest: /var/www/html/index.html
     owner: www-data
     group: www-data
     mode: 0644
+  notify: Reiniciar Apache2
 
 - name: "Copiar fichero al servidor remoto"
   copy:
@@ -24,5 +28,4 @@
     owner: root
     group: root
     mode: '0644'
-  notify:
-    - 
+  notify: Reiniciar Apache2
